@@ -1,4 +1,4 @@
-package com.edw.controller;
+package net.runesoft.keycloak.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,13 +14,10 @@ import java.util.HashMap;
 @RequestMapping("/users")
 public class UserController {
 
-    @GetMapping(path = "/me")
+    @GetMapping("/me")
     public ResponseEntity<HashMap<String, String>> me() {
-        // get a successful user login
-        OAuth2User user = ((OAuth2User)SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         return new ResponseEntity<>(new HashMap<>() {{
-            put("hello", user.getAttribute("name"));
-            put("your email is", user.getAttribute("email"));
+            put("hello","world");
         }}, HttpStatus.OK);
     }
 }
