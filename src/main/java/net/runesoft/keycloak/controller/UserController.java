@@ -15,9 +15,9 @@ import java.util.HashMap;
 public class UserController {
 
     @GetMapping("/me")
-    public ResponseEntity<HashMap<String, String>> me() {
-        return new ResponseEntity<>(new HashMap<>() {{
-            put("hello","world");
-        }}, HttpStatus.OK);
+    public ResponseEntity<OAuth2User> me() {
+        // Get user data from OAuth service (Keycloak).
+        OAuth2User user = ((OAuth2User)SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 }
