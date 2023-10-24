@@ -1,7 +1,9 @@
 version: '3'
+
 volumes:
   postgres_data:
     driver: local
+
 services:
   postgres:
     image: postgres:16.0
@@ -12,8 +14,10 @@ services:
       POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: keycloakdbpswrd
   keycloak:
-    image: quay.io/keycloak/keycloak:22.0.3
+    build: ./KeycloakConfig/
+    image: keycloak-healthcheck:1.0.0
     environment:
+      KC_HEALTH_ENABLED: true
       DB_VENDOR: POSTGRES
       DB_ADDR: postgres
       DB_DATABASE: keycloak
@@ -24,7 +28,20 @@ services:
       KEYCLOAK_ADMIN_PASSWORD: adminpswrd
     ports:
       - '9080:8080'
-    command:
-      - start-dev
+    command: start-dev --import-realm
     depends_on:
       - postgres
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://keycloak:8080/health/ready" ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+  springapp:
+    build: .
+    image: "springapp-example:1.0.0"
+    network_mode: host
+    ports:
+      - '8080:8080'
+    depends_on:
+      keycloak:
+        condition: service_healthy

@@ -1,0 +1,29 @@
+server:
+  port: '8080'
+  servlet:
+    context-path: /runesoft
+spring:
+  application:
+    name: Spring Keycloak Integration
+  security:
+    oauth2:
+      client:
+        provider:
+          external:
+            issuer-uri: 'http://localhost:9080/realms/runesoft'
+        registration:
+          external:
+            provider: external
+            client-id: login
+            client-secret: yK2Vx2HBwD6I8MLWc6VKDhBKmPELC7pO
+            scope: 'openid,offline_access,profile'
+            authorization-grant-type: authorization_code
+logging:
+  level:
+    org:
+      springframework:
+        security: INFO
+  pattern:
+    console: >-
+      %d{dd-MM-yyyy HH:mm:ss} %magenta([%thread]) %highlight(%-5level)
+      %logger.%M - %msg%n
