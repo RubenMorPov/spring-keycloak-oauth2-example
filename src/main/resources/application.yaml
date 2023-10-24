@@ -15,7 +15,7 @@ spring:
           external:
             provider: external
             client-id: login
-            client-secret: yK2Vx2HBwD6I8MLWc6VKDhBKmPELC7pO
+            client-secret: MVQCFxOzEgmnhjDhN4Q0oJRVKF5Li6Y1
             scope: 'openid,offline_access,profile'
             authorization-grant-type: authorization_code
 logging:
