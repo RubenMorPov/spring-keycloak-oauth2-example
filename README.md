@@ -1,7 +1,7 @@
 ![Banner](docs/banner.png)
-<p style="text-align: center">
+<p align="center">
     <a href="https://github.com/RubenMorPov/spring-keycloak-oauth2-example/releases/latest">
-          <img alt="Latest Release (Mango)" src="https://img.shields.io/github/v/release/RubenMorPov/spring-keycloak-oauth2-example?label=%F0%9F%9A%80%20Release">
+        <img alt="Latest Release (Mango)" src="https://img.shields.io/github/v/release/RubenMorPov/spring-keycloak-oauth2-example?label=%F0%9F%9A%80%20Release">
     </a>
 </p>
 
