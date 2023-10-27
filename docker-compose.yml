@@ -1,21 +1,28 @@
 version: '3'
-
+# Volumes section.
 volumes:
+  # This volume will store Keycloak's data.
   postgres_data:
     driver: local
-
+# Services section.
 services:
   postgres:
     image: postgres:16.0
     volumes:
+      # Volume link to store the database on it.
       - postgres_data:/var/lib/postgresql/data
+    # This environment variables are examples.
+    # If you plan to use this repo as a base one, consider change them to your needs.
     environment:
       POSTGRES_DB: keycloak
       POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: keycloakdbpswrd
   keycloak:
+    # Builds custom keycloak image.
     build: ./KeycloakConfig/
-    image: keycloak-healthcheck:1.0.0
+    image: runesoft-keycloak
+    # This environment variables are examples.
+    # If you plan to use this repo as a base one, consider change them to your needs.
     environment:
       KC_HEALTH_ENABLED: true
       DB_VENDOR: POSTGRES
@@ -28,20 +35,26 @@ services:
       KEYCLOAK_ADMIN_PASSWORD: adminpswrd
     ports:
       - '9080:8080'
+    # Starts keycloak with dev profile, and imports realm data.
     command: start-dev --import-realm
+    # Waits for Postgres to finish before starting this container.
     depends_on:
       - postgres
+    # Custom healthcheck to be able to know when Keycloak finishes its initialization.
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://keycloak:8080/health/ready" ]
       interval: 10s
       timeout: 10s
       retries: 5
-  springapp:
+  spring-app:
+    # Builds custom Java + Maven image.
     build: .
-    image: "springapp-example:1.0.0"
+    image: runesoft-spring-app
+    # Uses host network mode to be able to integrate with keycloak server at localhost:9080.
     network_mode: host
     ports:
       - '8080:8080'
     depends_on:
+      # Waits for Keycloak to finish before starting this container.
       keycloak:
         condition: service_healthy

@@ -12,5 +12,7 @@ LABEL authors="ruben.morchon"
 COPY --from=ubi-micro-build /mnt/rootfs /
 # Importing a realm example
 COPY realm-export.json /opt/keycloak/data/import/
+# Exposing default port.
 EXPOSE 8080
+# Launching keycloak. This SH will retrieve the params of CMD.
 ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]
